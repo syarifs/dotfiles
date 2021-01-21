@@ -1,0 +1,17 @@
+coc/lists
+coc/commands
+coc/ultisnips
+coc/memos.json
+coc/snippets-mru
+coc/list*
+coc/extensions/db.json
+coc/extensions/node_modules
+coc/extensions/coc-java-data
+coc/extensions/coc-phpls-data
+nvim/plugged/**
+mpd/pid
+mpd/log
+mpd/state
+mpd/database
+mpd/sticker.sql
+mpd/playlists
