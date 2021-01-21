@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ws=$(dmenu -p 'Workspace' <<< $(bspc query -D --names))
+
+bspc desktop -f "$ws"

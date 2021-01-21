@@ -1,0 +1,84 @@
+#!/bin/sh
+
+Clock() {
+    date=$(date "+%d/%m/%Y")
+    time=$(date "+%I:%M")
+    Format "  ${date}  ${time} "
+}
+
+Network() {
+    net=$(iw wlp3s0 info | grep "ssid" | sed "s/ssid//")
+    if [ -n "$net" ]; then
+        net=$net
+        fg="#8f8"
+        icon='直'
+    else
+        net="Disconnected"
+        fg="#fff"
+        icon='睊 '
+    fi
+    Format "%{F$fg}%{A1:networkmanager_dmenu&:} $icon${net} %{A1}%{F-}"
+}
+
+Volume() {
+    vol=$(amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+    ismute=$(amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $4 }')
+    if [ "$ismute" == 'on' ]; then
+        icon=''
+        printf "%%{A:amixer sset Master mute&:}"
+        fg='#fff'
+    else
+        icon='ﱝ'
+        printf "%%{A:amixer sset Master unmute&:}"
+        fg='#d11'
+    fi 
+
+    Format "%{F$fg}%{A4:amixer sset Master 5%+&:}%{A5:amixer sset Master 5%-&:} $icon $vol %{A}%{A}%{F-}%{A}"
+}
+
+CPUTemp() {
+    cpu=$(sensors | grep "temp1" | sed "s/temp1: *+//;s/.0°C *//" | tail -n 1)
+    if [ 1 -eq "$(echo "$cpu > 70" | bc)" ]; then
+        printf "%%{F#d11}"
+    elif [ 1 -eq "$(echo "$cpu > 50" | bc)" ]; then
+        printf "%%{F#aa2}"
+    fi
+        Format "%{A:alacritty -e htop&:}  "$cpu"°C%{A}%{F-} "
+}
+
+BAT() {
+    bat=$(cat /sys/class/power_supply/BAT0/capacity)
+    icon='bat'
+
+    if [ "$(cat /sys/class/power_supply/BAT0/status)" == "Charging" ]; then
+        icon=''
+        printf "%%{F#8f8}"
+    elif [ 1 -eq "$(echo "$bat > 79" | bc)" ]; then
+        icon=''
+        printf "%%{F#8f8}"
+    elif [ 1 -eq "$(echo "$bat < 20" | bc)" ]; then
+        printf "%%{F#d00}"
+        icon=''
+        if [ 1 -eq "$(echo "$bat < 10" | bc)" ]; then
+            notify-send -u critical "Battery Low"
+        else
+            notify-send "Battery Low"
+        fi
+    elif [ 1 -eq "$(echo "$bat < 40" | bc)" ]; then
+        icon=''
+        printf "%%{F#d74}"       
+    elif [ 1 -eq "$(echo "$bat < 60" | bc)" ]; then
+        icon=''
+        printf "%%{F#ac0}"   
+    elif [ 1 -eq "$(echo "$bat < 80" | bc)" ]; then
+        icon=''
+        printf "%%{F#4f8}"     
+    fi
+    Format " $icon $bat%%{F-} "
+}
+
+RAM() {
+    ram=$(free -m | grep Mem | awk '{print $3}')
+    Format "%{A:alacritty -e htop&:}  $ram MB %{A}"
+}
+

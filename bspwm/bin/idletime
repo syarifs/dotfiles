@@ -1,0 +1,12 @@
+#!/bin/sh
+
+while true; do
+    if $(! grep -q RUNNING /proc/asound/card*/*p/*/status 2>&1);  then
+        idle=$(xprintidle)
+        if [ 1 -eq "$(echo "$idle>$1" | bc)" ]; then
+            systemctl suspend
+            sleep 5
+        fi
+    fi
+    sleep 100;
+done

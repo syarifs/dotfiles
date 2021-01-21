@@ -1,0 +1,8 @@
+#!/bin/sh
+
+mt=$(file --mime-type "$1" -bL)
+case $mt in
+    text/* | application/json) highlight --inline-css --out-format=ansi "$1" ;;
+    *) exiftool -a "$1" ;;
+esac
+

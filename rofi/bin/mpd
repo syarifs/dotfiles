@@ -1,0 +1,28 @@
+#!/bin/sh
+
+
+NP=$(mpc current -f '%artist% - %title%')
+
+
+showPlaylists() {
+    POS=$(mpc current -f %position%)
+    POS=$(($POS-1))
+    PL=$(rofi -p "$NP" -selected-row $POS 4 -scroll-method 1 -dmenu \
+        <<< $(mpc playlist -f "%position%\t %artist% - %title%"))
+    mpc play $(echo $PL | awk '{print $1}')
+}
+
+
+MENU=$(rofi -sep '|' -p "$NP" -width 20 -scroll-method 1 -lines 7 -dmenu <<< " Next| Prev| Play| Pause| Stop| Playlists| Open Client")
+
+
+case $MENU in
+    *Prev) mpc prev ;;
+    *Play) mpc play ;;
+    *Pause) mpc pause ;;
+    *Stop) mpc stop ;;
+    *Playlists) showPlaylists ;;
+    *Next) mpc next ;;
+    *Client) alacritty -e ncmpcpp ;;
+esac
+

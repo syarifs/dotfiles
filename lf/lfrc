@@ -1,0 +1,88 @@
+set previewer ~/.config/lf/preview
+set drawbox true
+set icons true
+set dirfirst true
+
+
+cmd open ${{
+    case $(file --mime-type "$f" -bL) in
+        text/* | application/json) nvim "$f" ;;
+        image/*) feh --scale-down "$f" ;;
+        *) xdg-open "$f" & disown ;;
+    esac
+}}
+
+cmd mkdir ${{
+    echo -n "Directory Name : " && read ans
+    mkdir "$ans"
+    clear
+}}
+
+cmd mkfile ${{
+    echo -n "File Name : "
+    read ans
+    nvim "$ans"
+    clear
+}}
+
+cmd fzf ${{
+    res=$(fzf --reverse --header='Jump To Location')
+    if [ -f "$res" ]; then
+        cmd="select"
+    else
+        cmd="cd"
+    fi
+    lf -remote "send $id $cmd \"$res\""
+    clear
+}}
+
+cmd remove ${{
+    if [ -z "$fs" ]; then
+        echo "$f"
+        echo -n "Delete ? [y/n] "
+        read ans
+        [ "$ans" = "y" ] && rm -rf "$f"
+    else
+        printf "$fs\n"
+        echo "Delete ?"
+        read ans
+        if [ "$ans" = "y" ]; then
+            IFS=$'\n'
+            for f in $fs; do
+                echo "Removing $f"
+                rm -rf "$f"
+            done
+        else
+            echo "Cancelled"
+        fi
+    fi
+    clear
+}}
+
+cmd copy_paste ${{
+    for f in "$fs"; do
+        echo "Copying $f to $(pwd)"
+        cp -r "$f" "$(pwd)"
+    done
+    lf -remote "send unselect"
+}}
+
+map d
+map s
+map /
+map g
+
+map <enter> open
+map +d mkdir
+map +f mkfile
+map <delete> remove
+
+map c copy_paste
+map dd cd /mnt/Data
+map d/ cd /
+map dh cd ~
+
+map g set hidden!
+map / fzf
+
+

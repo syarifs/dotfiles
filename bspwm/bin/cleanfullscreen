@@ -1,0 +1,73 @@
+#!/bin/sh
+
+HideBar() {
+    if pgrep lemonbar; then
+        ID=$(xdo id -m -a LemonBar)
+        xdo hide $ID
+    fi
+}
+
+ShowBar() {
+    if pgrep lemonbar; then
+        ID=$(xdo id -m -a LemonBar)
+        xdo show $ID
+    fi
+}
+
+HideNode() {
+    NODES=$(bspc query -N -n .tiled -d "$1")
+    for node in $NODES; do
+        bspc node "$node" -g hidden=on
+    done
+}
+
+ShowNode() {
+    NODES=$(bspc query -N -n .tiled -d "$1")
+    for node in $NODES; do
+        bspc node "$node" -g hidden=off
+    done
+}
+
+
+bspc subscribe node_state | while read -r Ev; do
+    STATE=$(echo $Ev | awk '{print $5}')
+    DESKTOP=$(echo $Ev | awk '{print $3}')
+    ACTIVE=$(echo $Ev | awk '{print $6}')
+    if [ "$STATE" = "fullscreen" ]; then
+        if [ "$ACTIVE" = "on" ]; then
+            HideNode $DESKTOP
+            HideBar
+        else
+            ShowNode $DESKTOP
+            ShowBar
+        fi
+    fi
+done &
+
+bspc subscribe node_remove | while read -r Ev; do
+    DESKTOP=$(echo $Ev | awk '{print $3}')
+    if [ -z $(bspc query -N -n .fullscreen) ] ; then
+        ShowBar
+        ShowNode $DESKTOP
+    fi
+done &
+
+bspc subscribe node_transfer | while read -r Ev; do
+    srcNode=$(echo $Ev | awk '{print $4}')
+    if bspc query -N -n $srcNode.fullscreen ; then
+        srcDesk=$(echo $Ev | awk '{print $3}')
+        echo $srcDesk
+        ShowNode "$srcDesk"
+        destDesk=$(echo $Ev | awk '{print $6}')
+        HideNode "$destDesk"
+        echo $destDesk
+    fi
+done &
+
+bspc subscribe desktop_focus | while read -e Ev; do
+    if bspc query -N -n .fullscreen -d; then
+        HideBar
+    else 
+        ShowBar
+    fi
+done
