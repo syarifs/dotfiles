@@ -46,28 +46,26 @@ done &
 
 bspc subscribe node_remove | while read -r Ev; do
     DESKTOP=$(echo $Ev | awk '{print $3}')
-    if [ -z $(bspc query -N -n .fullscreen) ] ; then
+    if [ -z $(bspc query -N -n .fullscreen -d) ] ; then
         ShowBar
         ShowNode $DESKTOP
     fi
 done &
 
-bspc subscribe node_transfer | while read -r Ev; do
+bspc subscribe node_transfer | while read Ev; do
     srcNode=$(echo $Ev | awk '{print $4}')
     if bspc query -N -n $srcNode.fullscreen ; then
         srcDesk=$(echo $Ev | awk '{print $3}')
-        echo $srcDesk
         ShowNode "$srcDesk"
         destDesk=$(echo $Ev | awk '{print $6}')
         HideNode "$destDesk"
-        echo $destDesk
     fi
-done &
+done& 
 
-bspc subscribe desktop_focus | while read -e Ev; do
+bspc subscribe desktop_focus | while read -r Ev; do
     if bspc query -N -n .fullscreen -d; then
         HideBar
     else 
         ShowBar
     fi
-done
+done &

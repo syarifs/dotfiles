@@ -5,7 +5,7 @@ killall config
 PANEL_WM_NAME=LemonBar
 
 
-~/.config/lemonbar/config | lemonbar -p -B "#a0000000" -u 3 -g 1366x20+0+0 -U "#2059cf" -f "3270Narrow Nerd Font" -n $PANEL_WM_NAME
+~/.config/lemonbar/lemonconfig | lemonbar -p -B "#a0000000" -u 3 -g 1366x20+0+0 -U "#2059cf" -f "3270Narrow Nerd Font" -n $PANEL_WM_NAME
 
 wid=$(xdo id -m -a "$PANEL_WM_NAME")
 xdo lower "$wid"

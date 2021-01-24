@@ -1,0 +1,25 @@
+#!/bin/sh
+
+http="Inactive"
+mysql="Inactive"
+httpd_cmd="start"
+mysqld_cmd="start"
+
+if systemctl status httpd | grep -w active; then
+    http="Active"
+    httpd_cmd="stop"
+fi
+
+if systemctl status mysqld | grep -w active; then
+    mysql="Active"
+    mysqld_cmd="stop"
+fi
+
+
+serv=$(rofi -dmenu -lines 2 -sep "|" -width 20 \
+    -p "Web Server Status" <<< "HTTPD ($http)|MYSQLD ($mysql)")
+
+case $serv in
+    HTTPD*) sudo -A systemctl $httpd_cmd httpd ;;
+    MYSQLD*) sudo -A systemctl $mysqld_cmd mysqld ;;
+esac

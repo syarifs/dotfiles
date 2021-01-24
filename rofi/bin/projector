@@ -1,0 +1,42 @@
+#!/bin/sh
+
+cmd="--same-as"
+primary="LVDS1"
+secondary=""
+mirror=false
+
+selectMode() {
+    mode=$(rofi -dmenu -p 'Projector Mode' -sep '|' -width 20 -lines 2 <<< "Mirror|Dual Monitor")
+    case $mode in
+        Mirror) getMonitor; mirror=true ;;
+        Dual*) getMonitor; cmd="--left-of";;
+    esac
+}
+
+
+getMonitor() {
+    mon=$(rofi -dmenu -p 'Select Projector Screen' -lines 3 -width 20 <<< $(xrandr | grep -w 'connected' | awk '{print $1}'))
+    if [ "$mon" = "$primary" ]; then
+        getMonitor
+    else
+        secondary=$(echo $mon)
+    fi
+}
+
+selectMode
+xrandr --auto
+xrandr --output $secondary $cmd $primary
+xrandr --output $primary --primary
+
+if $mirror; then
+    bspc monitor LVDS1 -d      
+    if xrandr --output $secondary --mode 1366x768; then
+        echo "set 1366x768"
+    else
+        xrandr --output $secondary --mode 1360x768
+    fi
+    bspc monitor $secondary --remove
+else
+    bspc monitor $primary -d    
+    bspc monitor $secondary -d   
+fi

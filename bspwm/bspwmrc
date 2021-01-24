@@ -1,11 +1,14 @@
 #!/bin/sh
 killall compton
+killall cleanfullscreen
+
 feh --bg-fill ~/Pictures/wallpaper.jpg &
 compton --config ~/.config/compton/compton.conf -b 
 
-bspc monitor -d      
+bspc monitor LVDS1 -d      
 
 ~/.config/lemonbar/lemonstart &
+~/.config/bspwm/bin/cleanfullscreen &
 
 bspc config border_width         3
 bspc config window_gap          4

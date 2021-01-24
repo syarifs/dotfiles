@@ -21,7 +21,7 @@ install() {
     check_package bspwm sxhkd rofi dunst compton neovim-nightly-git \
         networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk \
         fzf lazygit nerd-fonts-complete pcmanfm lf-bin exiftool zip unzip unrar \
-        alacritty lxappearance-gtk3
+        alacritty lxappearance-gtk3 pv
     cp $(pwd) ~/.config/dotfiles -r
     ln -s ~/.config/dotfiles/{bspwm,coc,compton,dunst,lemonbar,lf,mpd,nvim,rofi,sxhkd,X11} \
         ~/.config
@@ -36,6 +36,8 @@ install() {
     sh -c "$(curl -fsSL https://starship.rs/install.sh)"
     ln -s ~/.config/dotfiles/ZSH/zshrc ~/.zshrc
     ln -s ~/.config/dotfiles/ZSH/zprofile ~/.zprofile
+    git clone https://github.com/zsh-users/zsh-autosuggestions .oh-my-zsh/plugins/zsh-autosuggestion
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting .oh-my-zsh/plugins/zsh-syntax-highlighting
 }
 
 install

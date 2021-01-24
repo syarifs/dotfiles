@@ -16,6 +16,9 @@ super + m
 super + n
     networkmanager_dmenu 
 
+super + s
+    ~/.config/rofi/bin/webserver
+
 @Print
     ~/.config/rofi/bin/screenshot
 
@@ -82,3 +85,5 @@ XF86AudioPlay
 XF86AudioStop
     mpc stop
 
+super + p
+    ~/.config/bspwm/bin/projector

@@ -1,5 +1,41 @@
 #!/bin/sh
 
+
+background="#a02d2d2d"
+
+Format() {
+    echo "%{+u}%{B$background}$1%{B}%{-u}"
+}
+
+Workspace() {
+    desktops=$(bspc query -D --names)
+    focused=$(bspc query -D --names -d focused)
+    i=0
+    for desktop in $desktops; do
+        desktop=$(echo $desktop)
+        node=$(bspc query -N -d $desktop)
+
+        if [ ! -z "$node" ]; then
+            desktops=$(echo $desktops | sed "s/$desktop/%{F#00B0FF}$desktop%{F-}/")
+        fi
+    done
+
+    desktops=$(echo $desktops | sed "s/$focused/%{B$background}%{+u}_$focused\_%{-u}%{B-}/")
+    echo "$desktops" | sed "s/_/ /g"
+}
+
+ActiveWindow() {
+    win=$(xdotool getwindowfocus)
+    extends='';
+    if [ ! "$win" -eq 309 ]; then
+        window=$(xprop WM_CLASS -id "$win" | awk -F '[""]' '{print $4}')
+        if [ 1 -eq "$(echo "${#window} > 10" | bc)" ]; then
+            extends='...'
+        fi
+        Format " ${window:0:10}$extends "
+    fi
+}
+
 Clock() {
     date=$(date "+%d/%m/%Y")
     time=$(date "+%I:%M")
@@ -81,4 +117,39 @@ RAM() {
     ram=$(free -m | grep Mem | awk '{print $3}')
     Format "%{A:alacritty -e htop&:}  $ram MB %{A}"
 }
+
+Update() {
+    echo "%{l} $(Workspace) $(ActiveWindow) %{r} $(Volume) $(CPUTemp) $(RAM) $(Network) $(BAT) $(Clock)"
+}
+
+while true; do
+    Update
+    sleep 10;
+done&
+
+bspc subscribe node_focus | 
+    while read -r Ev; do
+        Update
+    done&
+
+bspc subscribe node_remove | 
+    while read -r Ev; do
+        Update
+    done&
+
+bspc subscribe desktop_focus | 
+    while read -r Ev; do
+        Update
+    done &
+
+pactl subscribe | 
+    grep --line-buffered "sink #0" |
+    while read -r Ev; do
+        Update
+    done &
+
+nmcli monitor |
+    while read -r Ev; do
+        Update
+    done
 
