@@ -1,0 +1,27 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "javascript",
+    "graphql",
+    "vue",
+    "html",
+    "yaml",
+    "json",
+    "python",
+    "php"
+  ],
+
+  // python config
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+
+  "coc.source.tag.enable": true,
+  "intelephense.runtime": "node",
+
+  "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/utils/snips"],
+
+  "Lua.color.mode": "Semantic",
+  "Lua.completion.enable": true,
+  "Lua.workspace.preloadFileSize": 1000
+}

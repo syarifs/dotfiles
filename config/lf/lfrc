@@ -1,0 +1,184 @@
+set previewer ~/.config/lf/preview
+set drawbox true
+set icons true
+set dirfirst true
+
+
+cmd open ${{
+    case $(file --mime-type "$f" -bL) in
+        text/* | application/json) $EDITOR "$f" ;;
+        image/*) feh --scale-down "$f" & disown ;;
+        *) xdg-open "$f" & disown ;;
+    esac
+}}
+
+cmd mkdir ${{
+    echo -n "Directory Name : "
+    read ans
+    mkdir "$ans"
+    clear
+}}
+
+cmd mkfile ${{
+    echo -n "File Name : "
+    read ans
+    $EDITOR "$ans"
+    clear
+}}
+
+cmd fzf ${{
+    res=$(fzf --reverse --header='Jump To Location')
+    if [ -f "$res" ]; then
+        cmd="select"
+    else
+        cmd="cd"
+    fi
+    lf -remote "send $id $cmd \"$res\""
+    clear
+}}
+
+cmd remove ${{
+    if [ -z "$fs" ]; then
+        echo "$f"
+        echo -n "Delete ? [y/n] "
+        read ans
+        [ "$ans" = "y" ] && rm -rf "$f"
+    else
+        printf "$fs\n"
+        echo -n "Delete ? [y/n] "
+        read ans
+        if [ "$ans" = "y" ]; then
+            IFS=$'\n'
+            for f in $fs; do
+                echo "Removing $f"
+                rm -rf "$f"
+            done
+        else
+            echo "Cancelled"
+        fi
+    fi
+    clear
+}}
+
+cmd copy_paste ${{
+    if [ -z $fs ]; then
+        echo "No File or Directory Selected"
+        sleep 1;
+    else
+        IFS=$'\n'
+        for f in $fs; do
+            file=$(basename "$f")
+            echo "Copying $file to $(pwd)"
+            pv -rp "$f" > "$(pwd)/$file"
+        done
+        lf -remote "send unselect"
+    fi
+    clear
+}}
+
+cmd move_paste ${{
+    if [ -z $fs ]; then
+        echo "No File or Directory Selected"
+        sleep 1;
+    else
+        IFS=$'\n'
+        for f in $fs; do
+            file=$(basename "$f")
+            echo "Moving $file to $(pwd)"
+            pv -rp "$f" > "$(pwd)/$file"
+            rm -rf "$f"
+        done
+        lf -remote "send unselect"
+    fi
+    clear
+}}
+
+cmd dragandrop %dragon-drag-and-drop -x $fs
+cmd dragandropcopy %dragon-drag-and-drop -x $fs
+cmd dragandropmove %dragon-drag-and-drop -x $fs
+
+
+cmd unarchive ${{
+    if [ -z "$fs" ]; then
+        case "$f" in
+            *.zip) unzip "$f" -d "$(pwd)/$(basename "$f" | sed 's/\(.*\)\..*/\1/')" ;;
+            *.rar) unrar x "$f" ;;
+        esac
+    else
+        echo "Do you want to extract "
+        printf "$fs\n"
+        echo -n "to $(pwd) ? [y/n] "
+        read ans
+        if [[ "$ans" = "y" ]]; then
+            IFS=$'\n'
+            for f in $fs; do
+                case "$f" in
+                    *.zip) unzip "$f" -d "$(pwd)/$(basename "$f" | sed 's/\(.*\)\..*/\1/')" ;;
+                    *.rar) unrar x "$f" ;;
+                esac
+            done
+        fi
+    fi
+    lf -remote "send unselect"
+    clear
+}}
+
+cmd archive_zip ${{
+    if [ -z "$fs" ]; then
+        files=$(basename "$f" | sed 's/\(.*\)\..*/\1/')
+        file=$(basename "$f")
+        if [ -d "$f" ]; then
+            ex="/*"
+        fi
+        zip -r "$(pwd)/$files.zip" "$file"$ex
+    else
+        echo "zip this files ?"
+        printf "$fs\n"
+        echo "=============================="
+        echo -n " [y/n] "
+        read ans
+        if [[ "$ans" = "y" ]]; then
+            echo -n "zip name : "
+            read ans
+            file=()
+            for f in $fs; do
+                if [ -d "$f" ]; then
+                    file+="$(basename "$f")/* "
+                else
+                    file+="$(basename "$f") "
+                fi
+            done
+            zip "$(pwd)/$ans" $file
+        fi
+    fi
+    lf -remote "send unselect"
+    clear
+}}
+
+# unmap default mapping
+map d
+map s
+map /
+map g
+map c
+map y
+map p
+
+# custom mapping
+map <enter> open
+map +d mkdir
+map +f mkfile
+map <delete> remove
+map au unarchive
+map az archive_zip
+map cc copy_paste
+map cm move_paste
+map dd cd /mnt/Data
+map d/ cd /
+map dh cd ~
+map ds cd /srv/http
+map dm cd /run/media
+map g set hidden!
+map / fzf
+map b ${{ nvim $(pwd) }}
+

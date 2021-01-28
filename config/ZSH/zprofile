@@ -1,0 +1,6 @@
+export SUDO_ASKPASS="/home/$USER/.local/bin/askpass"
+
+if [[ "$(tty)" = "/dev/tty1" ]]; then
+    pgrep bspwm || startx $HOME/.config/X11/xinitrc
+fi
+
