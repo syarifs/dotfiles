@@ -1,13 +1,13 @@
 #!/bin/sh
 killall lemonbar
-killall config
+# killall pactl
+# killall nmcli
 
 PANEL_WM_NAME=LemonBar
 
 
-~/.config/lemonbar/lemonconfig | lemonbar -p -B "#a0000000" -u 3 -g 1366x20+0+0 -U "#2059cf" -f "3270Narrow Nerd Font" -n $PANEL_WM_NAME
+~/.config/lemonbar/lemonconfig | lemonbar -p -B "#af000000" -u 3 -g 1366x20+0+0 -U "#2059cf" -f "3270Narrow Nerd Font" -n $PANEL_WM_NAME
 
 wid=$(xdo id -m -a "$PANEL_WM_NAME")
 xdo lower "$wid"
 
-wait

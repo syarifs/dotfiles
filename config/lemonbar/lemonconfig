@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-background="#a02d2d2d"
+background="#af2d2d2d"
 
 Format() {
     echo "%{+u}%{B$background}$1%{B}%{-u}"
@@ -151,5 +151,5 @@ pactl subscribe |
 nmcli monitor |
     while read -r Ev; do
         Update
-    done
+    done 
 

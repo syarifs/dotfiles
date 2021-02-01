@@ -21,9 +21,12 @@ install() {
     check_package bspwm sxhkd rofi dunst compton neovim-nightly-git \
         networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk \
         fzf lazygit nerd-fonts-complete pcmanfm lf-bin exiftool zip unzip unrar \
-        alacritty lxappearance-gtk3 pv
+        alacritty lxappearance-gtk3 pv polybar betterlockscreen
+    # Link rofi to dmenu
+    sudo ln -s /usr/bin/rofi /usr/bin/dmenu
+    # Install configuration files
     mv $(pwd) ~/.dotfiles
-    ln -s ~/.dotfiles/config/{bspwm,coc,compton,dunst,lemonbar,lf,mpd,nvim,rofi,sxhkd,X11} \
+    ln -s ~/.dotfiles/config/{bspwm,coc,compton,dunst,polybar,lf,mpd,nvim,rofi,sxhkd,X11} \
         ~/.config
 
     # Setup NeoVim
@@ -34,6 +37,10 @@ install() {
     # Link local/bin folder to ~/.local
     ln -s ~/.dotfiles/local/bin/{mpd,askpass,idletime,logout,projector,screenshot,webserver} \
       ~/.local/bin/
+
+    # Setup betterlockscreen
+    sudo systemctl enable betterlockscreen@$USER
+    sudo systemctl start betterlockscreen@$USER
 
     # Setup ZSH and Starship Cross-Shell Prompt
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

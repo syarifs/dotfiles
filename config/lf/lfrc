@@ -67,13 +67,11 @@ cmd copy_paste ${{
     else
         IFS=$'\n'
         for f in $fs; do
-            file=$(basename "$f")
-            echo "Copying $file to $(pwd)"
-            pv -rp "$f" > "$(pwd)/$file"
+            cp -r "$f"  "$(pwd)/" &
+            progress -m
         done
         lf -remote "send unselect"
     fi
-    clear
 }}
 
 cmd move_paste ${{
@@ -83,18 +81,22 @@ cmd move_paste ${{
     else
         IFS=$'\n'
         for f in $fs; do
-            file=$(basename "$f")
-            echo "Moving $file to $(pwd)"
-            pv -rp "$f" > "$(pwd)/$file"
-            rm -rf "$f"
+            mv "$f"  "$(pwd)/" &
+            progress -m
         done
         lf -remote "send unselect"
     fi
-    clear
 }}
 
-cmd dragandrop %dragon-drag-and-drop -x $fs
-cmd dragandropcopy %dragon-drag-and-drop -x $fs
+cmd dragandrop %dragon-drag-and-drop -a -x $fs
+cmd dragandropcopy ${{
+  file=$(dragon-drag-and-drop -t -x)
+  IFS=$'\n'
+  for f in $file; do
+    mv "$f"  "$(pwd)/" &
+    progress -m
+  done
+}}
 cmd dragandropmove %dragon-drag-and-drop -x $fs
 
 

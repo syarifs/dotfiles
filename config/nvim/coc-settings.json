@@ -21,7 +21,7 @@
 
   "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/utils/snips"],
 
+  "Lua.runtime.version": "LuaJIT",
   "Lua.color.mode": "Semantic",
-  "Lua.completion.enable": true,
-  "Lua.workspace.preloadFileSize": 1000
+  "Lua.completion.callSnippet": "Both"
 }
