@@ -3,7 +3,7 @@
 MENU=$(rofi -sep '|' -p 'Exit System' -width 20 -lines 3 -dmenu <<< " Logout|勒 Restart|襤 Shutdown")
 
 case $MENU in
-    *Logout) ~/.config/bspwm/bin/quit ;;
+    *Logout) pkill -KILL -u $USER ;;
     *Restart) systemctl reboot ;;
     *Shutdown) systemctl -i poweroff
 esac

@@ -17,11 +17,6 @@
   "python.linting.pylintEnabled": true,
 
   "coc.source.tag.enable": true,
-  "intelephense.runtime": "node",
 
-  "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/utils/snips"],
-
-  "Lua.runtime.version": "LuaJIT",
-  "Lua.color.mode": "Semantic",
-  "Lua.completion.callSnippet": "Both"
+  "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/utils/snips"]
 }

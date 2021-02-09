@@ -29,7 +29,8 @@
     active-background:           @orange;
 }
 #window {
-    border-color: #2059cf;
+    border-color: #c49582;
+    border-radius: 10px;
     text-color: @foreground;
     padding:    5;
     text-color: @bordercolor;

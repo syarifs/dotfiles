@@ -11,8 +11,8 @@ nnoremap <silent> z :redo<CR>
 nnoremap <silent> f :NERDTreeToggle<CR>
 
 " shortcut comentary
-vnoremap <C-c> :Commentary<CR>
-nnoremap <C-c> :Commentary<CR>
+vnoremap <S-c> :Commentary<CR>
+nnoremap <S-c> :Commentary<CR>
 
 " Move TabLine
 nnoremap <silent> <C-A-Left> :bprevious<CR>

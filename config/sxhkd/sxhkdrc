@@ -49,17 +49,11 @@ super + {1-9}
 super + {t,shift + t,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
-super + Left
-    bspc node -f west
+super + {Left,Right,Up,Down}
+    bspc node -f {west,east,north,south}
 
-super + Right
-    bspc node -f east
-
-super + Up
-    bspc node -f north
-
-super + Down
-    bspc node -f south
+ctrl + shift + {Left,Right,Up,Down}
+    bspc node $(bspc query -N .focused) --swap {west,east,north,south}
 
 XF86MonBrightnessUp
     xbacklight -inc 5% 
@@ -92,5 +86,5 @@ super + p
     ~/.local/bin/projector
 
 ctrl + Escape
-    killall compton; notify-send "Compton Killed"
+    killall picom; notify-send "Compton Killed"
     

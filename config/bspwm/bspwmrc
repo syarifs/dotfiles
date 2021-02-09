@@ -1,9 +1,9 @@
 #!/bin/sh
-killall compton
+killall picom
 killall cleanfullscreen
 
-feh --bg-fill ~/Pictures/wallpaper.jpg &
-compton --config ~/.config/compton/compton.conf -b
+feh --bg-fill ~/.dotfiles/config/.wp.jpg &
+picom --config ~/.config/compton/compton.conf -b
 
 bspc monitor LVDS1 -d 1 2 3 4 5 6
 

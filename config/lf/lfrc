@@ -71,7 +71,9 @@ cmd copy_paste ${{
             progress -m
         done
         lf -remote "send unselect"
+        lf -remote "send reload"
     fi
+    clear
 }}
 
 cmd move_paste ${{
@@ -85,20 +87,38 @@ cmd move_paste ${{
             progress -m
         done
         lf -remote "send unselect"
+        lf -remote "send reload"
     fi
+    clear
 }}
 
-cmd dragandrop %dragon-drag-and-drop -a -x $fs
+cmd dragandrop ${{
+  IFS=$'\n'
+  dragon-drag-and-drop -a -x $fx
+  clear
+}}
+
 cmd dragandropcopy ${{
   file=$(dragon-drag-and-drop -t -x)
   IFS=$'\n'
   for f in $file; do
-    mv "$f"  "$(pwd)/" &
+    file=$(echo $f | sed 's/file:\/\///' | sed 's/%20/ /')
+    cp "$file"  "$(pwd)/" &
     progress -m
   done
+  clear
 }}
-cmd dragandropmove %dragon-drag-and-drop -x $fs
 
+cmd dragandropmove ${{
+  files=$(dragon-drag-and-drop -t -x)
+  IFS=$'\n'
+  for f in $files; do
+    file=$(echo $f | sed 's/file:\/\///' | sed 's/%20/ /')
+    mv "$file"  "$(pwd)/" &
+    progress -m
+  done
+  clear
+}}
 
 cmd unarchive ${{
     if [ -z "$fs" ]; then
@@ -117,6 +137,7 @@ cmd unarchive ${{
                 case "$f" in
                     *.zip) unzip "$f" -d "$(pwd)/$(basename "$f" | sed 's/\(.*\)\..*/\1/')" ;;
                     *.rar) unrar x "$f" ;;
+                    *.tar.gz) tar -xf "$f" ;;
                 esac
             done
         fi
@@ -157,6 +178,11 @@ cmd archive_zip ${{
     clear
 }}
 
+cmd setwp ${{
+  cp "$f" ~/.dotfiles/config/.wp.jpg
+  feh --bg-fill "$f"
+}}
+
 # unmap default mapping
 map d
 map s
@@ -165,6 +191,7 @@ map g
 map c
 map y
 map p
+map w
 
 # custom mapping
 map <enter> open
@@ -183,4 +210,7 @@ map dm cd /run/media
 map g set hidden!
 map / fzf
 map b ${{ nvim $(pwd) }}
-
+map xx dragandrop
+map xc dragandropcopy
+map xm dragandropmove
+map wp setwp
