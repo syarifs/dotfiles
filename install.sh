@@ -1,7 +1,7 @@
 #!/bin/sh
 
 check_package() {
-    if ! pacman -Qs yay > /dev/null ; then
+    if ! which yay > /dev/null ; then
         git clone https://aur.archlinux.org/yay-bin.git
         cd yay-bin
         makepkg -si
@@ -24,7 +24,7 @@ install() {
         networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk \
         fzf lazygit pcmanfm lf-bin zip unzip unrar alacritty xorg-xbacklight \
         lxappearance-gtk3 progress polybar betterlockscreen picom-jonaburg-git \
-        engrampa numix-circle-icon-theme-git numix-cursor-theme xplayer xreader
+        engrampa numix-circle-icon-theme-git numix-cursor-theme xplayer xreader pfecth
 
     # Link rofi to dmenu
     sudo ln -s /usr/bin/rofi /usr/bin/dmenu

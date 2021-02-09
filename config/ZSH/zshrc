@@ -104,7 +104,7 @@ alias upgrade="yay -Syyu"
 alias remove="yay -Rsnc"
 alias v="nvim"
 
-neofetch
+pfetch
 
 ###-begin-npm-completion-###
 #
