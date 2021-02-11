@@ -11,6 +11,7 @@ xsetroot -cursor_name left_ptr
 
 # custom scripts
 ~/.local/bin/idletime 180000&
+~/.local/bin/batterycheck &
 
 # start program on initialize x
 mpd &

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+while true; do
+    bat=$(cat /sys/class/power_supply/BAT0/capacity)
+    stats=$(cat /sys/class/power_supply/BAT0/status)
+
+    if [ "$stats" == "Discharging" ]; then
+      if [ 1 -eq "$(echo "$bat < 20" | bc)" ]; then
+        if [ 1 -eq "$(echo "$bat < 10" | bc)" ]; then
+            notify-send -u critical "Laptop will shutdown in 30 seconds"
+            sleep 32 
+            if [ "$stats" == "Discharging" ]; then
+                shutdown now
+            fi
+        else
+            notify-send "Battery Low"
+        fi
+     fi
+    fi
+    sleep 30
+  done

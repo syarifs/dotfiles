@@ -29,7 +29,7 @@ install() {
     # Link rofi to dmenu
     sudo ln -s /usr/bin/rofi /usr/bin/dmenu
 
-    # Check if bin directory is not exists
+    # Check if ~/.local/bin directory is not exists
     [ ! -d ~/.local/bin ] && mkdir ~/.local/bin
 
     # Install exiftool
@@ -43,9 +43,11 @@ install() {
 
     # Install configuration files
     mv $(pwd) ~/.dotfiles
-    ln -sf ~/.dotfiles/config/{bspwm,coc,compton,dunst,polybar,lf,mpd,nvim,rofi,sxhkd,X11} \
-        ~/.config
-
+    confFolder=(bspwm coc compton dunst polybar lf mpd nvim rofi sxhkd X11)
+    for i in $confFolder; do
+      ln -sf $HOME/.dotfiles/config/$i ~/.config
+    done
+   
     # Setup NeoVim
     curl -fLo /home/$USER/.local/share/nvim/site/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -54,9 +56,10 @@ install() {
     npm install
 
     # Link local/bin folder to ~/.local
-    [[ ! -d ~/.local/bin ]] && mkdir ~/.local/bin
-    ln -sf ~/.dotfiles/local/bin/{mpd,askpass,idletime,logout,projector,screenshot,webserver} \
-      ~/.local/bin/
+    customScript=(mpdc askpass idletime logout projector screenshot webserver batterycheck)
+    for i in $confFolder; do
+      ln -sf $HOME/.dotfiles/local/bin/$i ~/.local/bin
+    done
 
     # Setup betterlockscreen
     sudo systemctl enable betterlockscreen@$USER
