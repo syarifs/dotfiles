@@ -4,7 +4,7 @@
 #
 # Executed by startx (run your window manager from here)
 
-userresources=$HOME/.config/X11/Xresources
+userresources=$HOME/.dotfiles/config/X11/Xresources
 
 xrdb "$userresources"
 xsetroot -cursor_name left_ptr
@@ -16,7 +16,7 @@ xsetroot -cursor_name left_ptr
 # start program on initialize x
 mpd &
 dunst &
-sxhkd &
+flameshot &
 
 # exec window manager
 exec bspwm 

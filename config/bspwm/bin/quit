@@ -1,6 +1,0 @@
-#!/bin/sh
-
-bspc quit
-
-pkill -KILL -u $USER
-

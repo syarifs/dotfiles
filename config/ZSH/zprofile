@@ -1,3 +1,4 @@
+# export askpass for sudo -A command
 export SUDO_ASKPASS="/home/$USER/.local/bin/askpass"
 
 if [[ "$(tty)" = "/dev/tty1" ]]; then

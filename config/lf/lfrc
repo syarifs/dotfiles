@@ -8,11 +8,12 @@ cmd open ${{
     case $(file --mime-type "$f" -bL) in
         text/* | application/json) $EDITOR "$f" ;;
         image/*) feh --scale-down "$f" & disown ;;
-        *) xdg-open "$f" & disown ;;
+        *) xdg-open "$f" &> /dev/null & disown ;;
     esac
 }}
 
 cmd mkdir ${{
+    clear
     echo -n "Directory Name : "
     read ans
     mkdir "$ans"
@@ -20,6 +21,7 @@ cmd mkdir ${{
 }}
 
 cmd mkfile ${{
+    clear
     echo -n "File Name : "
     read ans
     $EDITOR "$ans"
@@ -27,6 +29,7 @@ cmd mkfile ${{
 }}
 
 cmd fzf ${{
+    clear
     res=$(fzf --reverse --header='Jump To Location')
     if [ -f "$res" ]; then
         cmd="select"
@@ -38,6 +41,7 @@ cmd fzf ${{
 }}
 
 cmd remove ${{
+    clear
     if [ -z "$fs" ]; then
         echo "$f"
         echo -n "Delete ? [y/n] "
@@ -61,6 +65,7 @@ cmd remove ${{
 }}
 
 cmd copy_paste ${{
+    clear
     if [ -z $fs ]; then
         echo "No File or Directory Selected"
         sleep 1;
@@ -77,6 +82,7 @@ cmd copy_paste ${{
 }}
 
 cmd move_paste ${{
+    clear
     if [ -z $fs ]; then
         echo "No File or Directory Selected"
         sleep 1;
@@ -93,12 +99,14 @@ cmd move_paste ${{
 }}
 
 cmd dragandrop ${{
+  clear
   IFS=$'\n'
   dragon-drag-and-drop -a -x $fx
   clear
 }}
 
 cmd dragandropcopy ${{
+  clear
   file=$(dragon-drag-and-drop -t -x)
   IFS=$'\n'
   for f in $file; do
@@ -110,6 +118,7 @@ cmd dragandropcopy ${{
 }}
 
 cmd dragandropmove ${{
+  clear
   files=$(dragon-drag-and-drop -t -x)
   IFS=$'\n'
   for f in $files; do
@@ -121,10 +130,30 @@ cmd dragandropmove ${{
 }}
 
 cmd unarchive ${{
-    if [ -z "$fs" ]; then
+      clear
+      if [ -z "$fs" ]; then
+        FOLDER=$(basename "$f" | sed 's/\(.*\)\..*/\1/')    
         case "$f" in
-            *.zip) unzip "$f" -d "$(pwd)/$(basename "$f" | sed 's/\(.*\)\..*/\1/')" ;;
-            *.rar) unrar x "$f" ;;
+          *.zip) 
+             unzip "$f" -d "$(pwd)/$FOLDER" ;;
+          *.rar)
+             DIRNOW=$(pwd)
+             DIR=$(unrar lb "$f")
+             IFS=$'\n'
+             for i in $DIR; do
+               if [[ ! "${i%/*}" = "$FOLDER" ]]; then
+                 mkdir "$(pwd)/$FOLDER"
+                 cd "$(pwd)/$FOLDER"
+                 break
+               fi
+             done
+             unrar x "$f"
+             cd $DIRNOW
+             ;;
+          *.tar.*) 
+             mkdir "$(pwd)/${FOLDER%.*}"
+             tar -xf "$f" --directory="$(pwd)/${FOLDER%.*}" --verbose
+             ;;
         esac
     else
         echo "Do you want to extract "
@@ -134,19 +163,40 @@ cmd unarchive ${{
         if [[ "$ans" = "y" ]]; then
             IFS=$'\n'
             for f in $fs; do
-                case "$f" in
-                    *.zip) unzip "$f" -d "$(pwd)/$(basename "$f" | sed 's/\(.*\)\..*/\1/')" ;;
-                    *.rar) unrar x "$f" ;;
-                    *.tar.gz) tar -xf "$f" ;;
+              clear
+              FOLDER=$(basename "$f" | sed 's/\(.*\)\..*/\1/') 
+              case "$f" in
+                  *.zip) 
+                      unzip "$f" -d "$(pwd)/$FOLDER" ;;
+                  *.rar)
+                      DIRNOW=$(pwd)
+                      DIR=$(unrar lb "$f")
+                      IFS=$'\n'
+                      for i in $DIR; do
+                        if [[ ! "${i%/*}" = "$FOLDER" ]]; then
+                          mkdir "$(pwd)/$FOLDER"
+                          cd "$(pwd)/$FOLDER"
+                          break
+                        fi
+                      done
+                      unrar x "$f"
+                      cd $DIRNOW
+                      ;;
+                  *.tar.gz) 
+                      mkdir "$(pwd)/${FOLDER%.*}"
+                      tar -xf "$f" --directory="$(pwd)/${FOLDER%.*}" --verbose
+                      ;;
                 esac
             done
         fi
     fi
     lf -remote "send unselect"
+    lf -remote "send reload"
     clear
 }}
 
 cmd archive_zip ${{
+    clear
     if [ -z "$fs" ]; then
         files=$(basename "$f" | sed 's/\(.*\)\..*/\1/')
         file=$(basename "$f")
@@ -179,8 +229,18 @@ cmd archive_zip ${{
 }}
 
 cmd setwp ${{
+  clear
+  echo "Setting up Wallpaper"
   cp "$f" ~/.dotfiles/config/.wp.jpg
   feh --bg-fill "$f"
+  clear
+}}
+
+cmd setLockScreen ${{
+  clear
+  betterlockscreen -u "$f"
+  betterlockscreen -l dim
+  clear
 }}
 
 # unmap default mapping
@@ -207,6 +267,7 @@ map d/ cd /
 map dh cd ~
 map ds cd /srv/http
 map dm cd /run/media
+map ds cd /run/user/1000/gvfs
 map g set hidden!
 map / fzf
 map b ${{ nvim $(pwd) }}
@@ -214,3 +275,4 @@ map xx dragandrop
 map xc dragandropcopy
 map xm dragandropmove
 map wp setwp
+map wl setLockScreen

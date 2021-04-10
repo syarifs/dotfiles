@@ -6,11 +6,11 @@ while true; do
 
     if [ "$stats" == "Discharging" ]; then
       if [ 1 -eq "$(echo "$bat < 20" | bc)" ]; then
-        if [ 1 -eq "$(echo "$bat < 10" | bc)" ]; then
-            notify-send -u critical "Laptop will shutdown in 30 seconds"
+        if [ 1 -eq "$(echo "$bat < 12" | bc)" ]; then
+            notify-send -u critical "System will Suspend in 30 seconds"
             sleep 32 
             if [ "$stats" == "Discharging" ]; then
-                shutdown now
+                systemctl suspend
             fi
         else
             notify-send "Battery Low"

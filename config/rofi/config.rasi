@@ -1,10 +1,10 @@
 * {
     text-color:                  #f2f2f2;
-    background-color:            #333;
+    background-color:            #0A0E1400;
     lightbg:                     #f0f0f0;
-    red:                         #f15d22;
-    orange:                      #faa41a; 
-    blue:                        #48b9c7; 
+    red:                         #112E50;
+    orange:                      #0E3A73; 
+    blue:                        #8D63fA; 
 
     selected-normal-foreground:  @foreground;
     normal-foreground:           @foreground;
@@ -29,7 +29,7 @@
     active-background:           @orange;
 }
 #window {
-    border-color: #c49582;
+    border-color: @blue;
     border-radius: 10px;
     text-color: @foreground;
     padding:    5;

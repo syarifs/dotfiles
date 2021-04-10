@@ -1,12 +1,3 @@
-config/coc/lists
-config/coc/commands
-config/coc/ultisnips
-config/coc/memos.json
-config/coc/snippets-mru
-config/coc/list*
-config/coc/extensions/db.json
-config/coc/extensions/node_modules
-config/coc/extensions/coc-**-data
 config/nvim/plugged/**
 config/mpd/pid
 config/mpd/log

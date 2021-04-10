@@ -1,67 +1,51 @@
 call plug#begin()
+
 " File Manager
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ryanoasis/vim-devicons'
-
-" Auto Pairing
-Plug 'tpope/vim-surround'
-
-" Commenter
-Plug 'tpope/vim-commentary'
-
-" Floating Terminal
-Plug 'voldikss/vim-floaterm'
-
-" Multiple Cursor Support
-Plug 'terryma/vim-multiple-cursors'
-
-" Find and Replace
-Plug 'brooth/far.vim'
-
-" Colorizer
-Plug 'norcalli/nvim-colorizer.lua'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
 " Snippets
-Plug 'SirVer/ultisnips'
-Plug 'keelii/vim-snippets'
+Plug 'SirVer/ultisnips', {'for': ['javascript', 'php', 'vue', 'blade', 'java', 'c', 'python', 'cpp', 'html']}
+Plug 'honza/vim-snippets', {'for': ['javascript', 'php', 'vue', 'blade', 'java', 'c', 'python', 'cpp', 'html']}
 
-" Color Picker
-Plug 'KabbAmine/vCoolor.vim'
+" Floaterm
+Plug 'voldikss/vim-floaterm'
 
-" Tagbar Viewer
-Plug 'preservim/tagbar'
+" Telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 " Theme
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'ChristianChiarulli/nvcode-color-schemes.vim'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'joshdick/onedark.vim'
 
-" Programming Plugin
+" LSP
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" Dart Plugin
-Plug 'dart-lang/dart-vim-plugin'
+" Commentary
+Plug 'tpope/vim-commentary'
 
-" Java Syntax highlighter
-Plug 'uiiaoo/java-syntax.vim'
+" AutoPairs
+Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
 
-" Markdown
-Plug 'iamcco/markdown-preview.vim'
+" Colorizer
+Plug 'chrisbra/colorizer'
 
-" PHP Programming
-Plug 'noahfrederick/vim-composer'
-Plug 'jwalton512/vim-blade'
-Plug 'captbaritone/better-indent-support-for-php-with-html'
-Plug 'tpope/vim-dispatch'
-Plug 'noahfrederick/vim-laravel'
+" Vim Lightline
+Plug 'itchyny/lightline.vim'
+Plug 'josa42/vim-lightline-coc'
 
-" HTML Programming
-Plug 'rstacruz/sparkup'
+" CSV Support
+Plug 'chrisbra/csv.vim', {'for': ['csv']}
 
-" Git Plugin
-Plug 'airblade/vim-gitgutter'
+" Laravel Support
+Plug 'jwalton512/vim-blade', {'for': ['php']}
+Plug 'noahfrederick/vim-laravel', {'for': ['php']}
+
+" Dart Support
+Plug 'dart-lang/dart-vim-plugin', {'for': ['dart']}
+
+" Better Syntax Highlight
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
-

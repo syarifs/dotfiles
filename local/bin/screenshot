@@ -1,9 +1,0 @@
-#!/bin/sh
-
-MENU=$(rofi -sep '|' -p 'Screenshot' \
-    -width 20 -lines 2 -dmenu <<< "Fullscreen|Select Rectangular")
-
-case $MENU in
-    *Fullscreen) scrot ~/Pictures/Screnshot_$(date).png ;;
-    *Rectangular) scrot -s ~/Pictures/Screnshot_$(date).png ;;
-esac

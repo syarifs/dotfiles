@@ -19,59 +19,81 @@ check_package() {
    fi
 }
 
+link_config() {
+  [ ! -d ~/.config ] && mkdir ~/.config
+  for i in $@; do
+    ln -sf /home/$USER/.dotfiles/config/$i ~/.config
+  done
+}
+
+link_script() {
+  [ ! -d ~/.local/bin ] && mkdir ~/.local/bin
+  for i in $@; do
+    ln -sf /home/$USER/.dotfiles/local/bin/$i ~/.local/bin
+  done
+}
+
+install_bspwm() {
+  echo "Installing and Configuring BSPWM"
+  check_package bspwm sxhkd
+  link_config bspwm sxhkd
+}
+
+install_i3() {
+  check_package i3-gaps
+  link_config i3
+}
+
 install() {
-    check_package bspwm sxhkd rofi dunst compton neovim-nightly-git \
-        networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk \
+    echo "Installing Base Configuration..."
+    sleep 1
+
+    check_package rofi dunst compton neovim-nightly-bin \
+        networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk wmctrl \
         fzf lazygit pcmanfm lf-bin zip unzip unrar alacritty xorg-xbacklight \
         lxappearance-gtk3 progress polybar betterlockscreen picom-jonaburg-git \
-        engrampa numix-circle-icon-theme-git numix-cursor-theme xplayer xreader pfecth
+        engrampa numix-circle-icon-theme-git numix-cursor-theme xreader xreader pfetch \
+        otf-ipafont ttf-dejavu ttf-droid ttf-roboto ttf-liberation \
+        perl-image-exiftool flameshot
 
     # Link rofi to dmenu
-    sudo ln -s /usr/bin/rofi /usr/bin/dmenu
-
-    # Check if ~/.local/bin directory is not exists
-    [ ! -d ~/.local/bin ] && mkdir ~/.local/bin
-
-    # Install exiftool
-    wget https://exiftool.org/Image-ExifTool-12.17.tar.gz
-    tar -xfv Image-ExifTool-12.17.tar.gz --directory ~/.local/share/
-    ln -s /home/$USER/.local/share/Image-ExifTool-12.17/exiftool ~/.local/bin/
+    [ ! -f /usr/bin/dmenu ] && sudo ln -s /usr/bin/rofi /usr/bin/dmenu
 
     # Install font
-    sudo cp font/3270 Narrow Nerd Font Complete.ttf /usr/share/fonts/TTF
+    sudo cp "font/3270 Narrow Nerd Font Complete.ttf" /usr/share/fonts/TTF/
     sudo fc-cache
 
     # Install configuration files
-    mv $(pwd) ~/.dotfiles
-    confFolder=(bspwm coc compton dunst polybar lf mpd nvim rofi sxhkd X11)
-    for i in $confFolder; do
-      ln -sf $HOME/.dotfiles/config/$i ~/.config
-    done
-   
+    [ `pwd` !=  "/home/$USER/.dotfiles" ] && mv $(pwd) ~/.dotfiles
+    link_config compton dunst polybar lf mpd nvim rofi X11
+
+    # Link local/bin folder to ~/.local
+    link_script mpdc askpass idletime logout projector webserver batterycheck awesome-flameshot 
+
     # Setup NeoVim
     curl -fLo /home/$USER/.local/share/nvim/site/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     nvim +PlugInstall +qall
-    cd ~/.dotfiles/config/coc/extensions/
-    npm install
-
-    # Link local/bin folder to ~/.local
-    customScript=(mpdc askpass idletime logout projector screenshot webserver batterycheck)
-    for i in $confFolder; do
-      ln -sf $HOME/.dotfiles/local/bin/$i ~/.local/bin
-    done
+    sudo npm install -g neovim
+    # sudo pip install neovim
 
     # Setup betterlockscreen
     sudo systemctl enable betterlockscreen@$USER
     sudo systemctl start betterlockscreen@$USER
+    betterlockscreen -u ~/.dotfiles/config/.wp.jpg
 
     # Setup ZSH and Starship Cross-Shell Prompt
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    sh -c "$(curl -fsSL https://starship.rs/install.sh)"
-    ln -sf ~/.dotfiles/config/ZSH/zshrc ~/.zshrc
-    ln -sf ~/.dotfiles/config/ZSH/zprofile ~/.zprofile
-    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
+    if [ ! -d ~/.oh-my-zsh ]; then
+       sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+       sudo sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+       ln -sf ~/.dotfiles/config/ZSH/zshrc ~/.zshrc
+       ln -sf ~/.dotfiles/config/ZSH/zprofile ~/.zprofile
+       git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
+       git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
+    fi
 }
 
 install
+install_bspwm
+
+

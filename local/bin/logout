@@ -1,6 +1,12 @@
 #!/bin/sh
 
-MENU=$(rofi -sep '|' -p 'Exit System' -width 20 -lines 3 -dmenu <<< " Logout|勒 Restart|襤 Shutdown")
+THEME="~/.config/rofi/config.rasi"
+
+if [ "$1" = "-c" ]; then
+  THEME="$2"
+fi
+
+MENU=$(rofi -sep '|' -theme $THEME -p 'Exit System' -width 20 -lines 3 -dmenu <<< " Logout|勒 Restart|襤 Shutdown")
 
 case $MENU in
     *Logout) pkill -KILL -u $USER ;;

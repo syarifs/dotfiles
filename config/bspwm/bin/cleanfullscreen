@@ -4,25 +4,33 @@ HideBar() {
     if pgrep lemonbar; then
         ID=$(xdo id -m -a LemonBar)
         xdo hide $ID
+    elif pgrep polybar; then
+      polybar-msg cmd hide
     fi
+
 }
 
 ShowBar() {
     if pgrep lemonbar; then
         ID=$(xdo id -m -a LemonBar)
         xdo show $ID
+    elif pgrep polybar; then 
+        ID=$(pgrep polybar --list-full | grep config.ini | awk '{print $1}')
+        for i in $ID; do
+          echo cmd:show >> /tmp/polybar_mqueue.$i
+        done
     fi
 }
 
 HideNode() {
-    NODES=$(bspc query -N -n .tiled -d "$1")
+    NODES=$(bspc query -N -n .\!fullscreen -d "$1")
     for node in $NODES; do
         bspc node "$node" -g hidden=on
     done
 }
 
 ShowNode() {
-    NODES=$(bspc query -N -n .tiled -d "$1")
+    NODES=$(bspc query -N -n .\!fullscreen -d "$1")
     for node in $NODES; do
         bspc node "$node" -g hidden=off
     done
@@ -69,3 +77,11 @@ bspc subscribe desktop_focus | while read -r Ev; do
         ShowBar
     fi
 done &
+
+bspc subscribe node_add | 
+  while read -r Ev; do
+    xdo id -n polybar |
+      while read a; do
+        xdo raise $a
+      done
+  done &

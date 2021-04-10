@@ -106,6 +106,9 @@ alias v="nvim"
 
 pfetch
 
+# export PATH
+export PATH=$PATH:~/.config/composer/vendor/bin/
+
 ###-begin-npm-completion-###
 #
 # npm command completion script
