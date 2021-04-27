@@ -31,17 +31,20 @@ let g:coc_global_extensions = [
   \ 'coc-phpls',
   \ 'coc-tailwindcss',
   \ 'coc-vetur',
+  \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-snippets',
   \ 'coc-java',
   \ 'coc-json',
   \ 'coc-clangd',
-  \ 'coc-python',
+  \ 'coc-pyright',
   \ 'coc-vimlsp',
   \ 'coc-sh',
   \ 'coc-import-cost',
   \ 'coc-sql',
-  \ 'coc-tag'
+  \ 'coc-rls',
+  \ 'coc-rust-analyzer',
+  \ 'coc-tag',
   \ ]
 
 " Airline
@@ -56,7 +59,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " activate color on every buffer
 autocmd BufEnter * execute 'ColorToggle'
 
-autocmd BufEnter *.php, *.dart set shiftwidth 8
+autocmd BufEnter *.php,*.dart set shiftwidth=4
 
 " CSV Column Highlight
 hi link CSVColumnOdd MoreMsg

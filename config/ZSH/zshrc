@@ -169,3 +169,7 @@ elif type compctl &>/dev/null; then
   compctl -K _npm_completion npm
 fi
 ###-end-npm-completion-###
+
+[ ! `which tmux` ] && sudo pacman -S tmux
+[ ! `echo $TMUX` ] && [ ! `tmux attach-session -t 0` ] && tmux
+

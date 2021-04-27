@@ -3,6 +3,9 @@ call plug#begin()
 " File Manager
 Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
+" Multi Corsor
+Plug 'terryma/vim-multiple-cursors'
+
 " Snippets
 Plug 'SirVer/ultisnips', {'for': ['javascript', 'php', 'vue', 'blade', 'java', 'c', 'python', 'cpp', 'html']}
 Plug 'honza/vim-snippets', {'for': ['javascript', 'php', 'vue', 'blade', 'java', 'c', 'python', 'cpp', 'html']}

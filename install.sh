@@ -54,7 +54,7 @@ install() {
         lxappearance-gtk3 progress polybar betterlockscreen picom-jonaburg-git \
         engrampa numix-circle-icon-theme-git numix-cursor-theme xreader xreader pfetch \
         otf-ipafont ttf-dejavu ttf-droid ttf-roboto ttf-liberation \
-        perl-image-exiftool flameshot
+        perl-image-exiftool flameshot xfce4-settings
 
     # Link rofi to dmenu
     [ ! -f /usr/bin/dmenu ] && sudo ln -s /usr/bin/rofi /usr/bin/dmenu

@@ -10,7 +10,12 @@
     "php"
   ],
 
-  "eslint.quiet": true,
+  "rust-analyzer.server.path": "/bin/rust-analyzer",
+
+ "javascript.suggestionActions.enabled": false,
+ "eslint.quiet": true,
+
+  "tailwindCSS.trace.server": "verbose",
 
   // python config
   "python.linting.enabled": true,

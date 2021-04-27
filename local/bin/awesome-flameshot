@@ -159,7 +159,7 @@ function main() {
     echo -e "\n\n${Light_Cyan} [+] SCRENSHOTING ${NoColor}"
 
     printf "%-50s" "**|--[+]*Starting*Scrot*" | sed 's/ /./g' | sed 's/*/ /g'
-    flameshot gui --path $HOME/Pictures --raw > /dev/null 2>&1
+    flameshot gui --path $_SCREENSHOT_DIR_ --raw > /dev/null 2>&1
     # flameshot full --path $HOME/Pictures --raw --delay 1000 > /dev/null 2>&1
     # case $1 in
     #   full )
