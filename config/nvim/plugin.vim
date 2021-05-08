@@ -1,7 +1,8 @@
 call plug#begin()
 
 " File Manager
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
 
 " Multi Corsor
 Plug 'terryma/vim-multiple-cursors'
@@ -50,5 +51,8 @@ Plug 'dart-lang/dart-vim-plugin', {'for': ['dart']}
 
 " Better Syntax Highlight
 Plug 'sheerun/vim-polyglot'
+
+" Vim Git
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()

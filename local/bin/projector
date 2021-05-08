@@ -29,7 +29,7 @@ xrandr --output $secondary $cmd $primary
 xrandr --output $primary --primary
 
 if $mirror; then
-    bspc monitor LVDS1 -d      
+    bspc monitor LVDS1 -d 1 2 3 4 5 6
     if xrandr --output $secondary --mode 1366x768; then
         echo "set 1366x768"
     else
@@ -37,6 +37,6 @@ if $mirror; then
     fi
     bspc monitor $secondary --remove
 else
-    bspc monitor $primary -d    
-    bspc monitor $secondary -d   
+    bspc monitor $primary -d 1 2 3
+    bspc monitor $secondary -d 4 5 6
 fi

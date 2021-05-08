@@ -17,7 +17,9 @@ vnoremap <silent> <A-/> :Commentary<CR>
 
 
 " File Manager
-nnoremap <silent> <C-f> :CHADopen<CR>
+nnoremap <silent> <C-f> :NvimTreeToggle<CR>
+nnoremap <silent> <C-r> :NvimTreeRefresh<CR>
+nnoremap <silent> <C-F> :NvimTreeFindFile<CR>
 
 " Copy to Clipboard (xclip required)
 vnoremap <silent> <C-c> "+y
@@ -30,6 +32,10 @@ nmap <silent> <A-Up> <C-W>k
 nmap <silent> <A-Left> <C-W>h
 nmap <silent> <A-Right> <C-W>l
 nmap <silent> <A-Down> <C-W>j
+
+" Tab Support
+nmap <silent> <A-S-Left> :bprevious<CR>
+nmap <silent> <A-S-Right> :bnext<CR>
 
 " Tab Completion
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"

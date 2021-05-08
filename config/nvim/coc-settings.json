@@ -10,19 +10,23 @@
     "php"
   ],
 
-  "rust-analyzer.server.path": "/bin/rust-analyzer",
-
  "javascript.suggestionActions.enabled": false,
  "eslint.quiet": true,
 
   "tailwindCSS.trace.server": "verbose",
 
-  // python config
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
-
   "coc.source.tag.enable": true,
   "intelephense.runtime": "node",
 
-  "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/utils/snips"]
+  "python.linting.pylintArgs": ["--generate-members", "--extension-pkg-whitelist=cv2"],
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "snippets.ultisnips.directories": [
+    "UltiSnips",
+    "~/.config/nvim/utils/snips"
+  ],
+  "python.autoComplete.extraPaths": [
+    "${env:SPARK_HOME}/python",
+    "${env:SPARK_HOME}/python/pyspark"
+  ]
 }

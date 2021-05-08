@@ -51,7 +51,7 @@ install() {
     check_package rofi dunst compton neovim-nightly-bin \
         networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk wmctrl \
         fzf lazygit pcmanfm lf-bin zip unzip unrar alacritty xorg-xbacklight \
-        lxappearance-gtk3 progress polybar betterlockscreen picom-jonaburg-git \
+        progress polybar betterlockscreen picom-jonaburg-git \
         engrampa numix-circle-icon-theme-git numix-cursor-theme xreader xreader pfetch \
         otf-ipafont ttf-dejavu ttf-droid ttf-roboto ttf-liberation \
         perl-image-exiftool flameshot xfce4-settings

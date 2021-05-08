@@ -18,9 +18,13 @@ set noshowmode
 " Color Scheme
 colorscheme onedark
 
-" Auto cd to Working Directory
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
-    \ execute 'CHADopen' | wincmd p | enew | execute 'cd '.argv()[0] | endif
+" Nvim Tree Setup
+let g:nvim_tree_auto_open = 1
+let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ]
+let g:nvim_tree_indent_markers = 1
+let g:nvim_tree_git_hl = 1
+let g:nvim_tree_quit_on_open = 1
+
 
 " Code of Conqueror
 let g:coc_global_extensions = [
@@ -37,12 +41,12 @@ let g:coc_global_extensions = [
   \ 'coc-java',
   \ 'coc-json',
   \ 'coc-clangd',
-  \ 'coc-pyright',
   \ 'coc-vimlsp',
   \ 'coc-sh',
   \ 'coc-import-cost',
   \ 'coc-sql',
   \ 'coc-rls',
+  \ 'coc-python',
   \ 'coc-rust-analyzer',
   \ 'coc-tag',
   \ ]
