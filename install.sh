@@ -15,7 +15,7 @@ check_package() {
    done
 
    if [ -n "$newpack" ]; then
-       yay -S $newpack
+       yay -Sq $newpack --noconfirm
    fi
 }
 
@@ -48,13 +48,13 @@ install() {
     echo "Installing Base Configuration..."
     sleep 1
 
-    check_package rofi dunst compton neovim-nightly-bin \
+    check_package rofi dunst compton neovim-nightly-bin mpv \
         networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk wmctrl \
         fzf lazygit pcmanfm lf-bin zip unzip unrar alacritty xorg-xbacklight \
         progress polybar betterlockscreen picom-jonaburg-git \
         engrampa numix-circle-icon-theme-git numix-cursor-theme xreader xreader pfetch \
         otf-ipafont ttf-dejavu ttf-droid ttf-roboto ttf-liberation \
-        perl-image-exiftool flameshot xfce4-settings
+        perl-image-exiftool flameshot xfce4-settings npm python-pip
 
     # Link rofi to dmenu
     [ ! -f /usr/bin/dmenu ] && sudo ln -s /usr/bin/rofi /usr/bin/dmenu
@@ -65,7 +65,7 @@ install() {
 
     # Install configuration files
     [ `pwd` !=  "/home/$USER/.dotfiles" ] && mv $(pwd) ~/.dotfiles
-    link_config compton dunst polybar lf mpd nvim rofi X11
+    link_config compton dunst polybar lf mpd nvim rofi X11 alacritty
 
     # Link local/bin folder to ~/.local
     link_script mpdc askpass idletime logout projector webserver batterycheck awesome-flameshot 
@@ -75,12 +75,16 @@ install() {
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     nvim +PlugInstall +qall
     sudo npm install -g neovim
-    # sudo pip install neovim
+    sudo pip install neovim
 
     # Setup betterlockscreen
     sudo systemctl enable betterlockscreen@$USER
     sudo systemctl start betterlockscreen@$USER
     betterlockscreen -u ~/.dotfiles/config/.wp.jpg
+
+    # Setup Tmux and Themes
+    git clone https://github.com/odedlaz/tmux-onedark-theme.git ~/.tmux/themes/onedark-tmux
+    ln -sf ~/.dotfiles/config/tmux/tmux.conf ~/.tmux.conf
 
     # Setup ZSH and Starship Cross-Shell Prompt
     if [ ! -d ~/.oh-my-zsh ]; then

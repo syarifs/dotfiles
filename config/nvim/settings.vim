@@ -45,9 +45,7 @@ let g:coc_global_extensions = [
   \ 'coc-sh',
   \ 'coc-import-cost',
   \ 'coc-sql',
-  \ 'coc-rls',
   \ 'coc-python',
-  \ 'coc-rust-analyzer',
   \ 'coc-tag',
   \ ]
 
