@@ -1,6 +1,8 @@
 # export askpass for sudo -A command
 export SUDO_ASKPASS="/home/$USER/.local/bin/askpass"
 
+[ -f $HOME/.profile ] && source $HOME/.profile
+
 if [[ "$(tty)" = "/dev/tty1" ]]; then
     pgrep bspwm || startx $HOME/.config/X11/xinitrc
 fi

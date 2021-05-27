@@ -184,3 +184,5 @@ function _pip_completion {
 }
 compctl -K _pip_completion pip
 # pip zsh completion end
+
+alias luamake=/home/syarif/.config/nvim/lsp/lua-language-server/3rd/luamake/luamake

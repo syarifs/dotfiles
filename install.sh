@@ -1,4 +1,5 @@
 #!/bin/sh
+DIR=~/.dotfiles/config/nvim/lsp-install
 
 check_package() {
     if ! which yay > /dev/null ; then
@@ -48,12 +49,12 @@ install() {
     echo "Installing Base Configuration..."
     sleep 1
 
-    check_package rofi dunst compton neovim-nightly-bin mpv \
+    check_package rofi dunst neovim-nightly-bin mpv hightlight \
         networkmanager-dmenu xprintidle mpd mpc ncmpcpp fantome-gtk wmctrl \
         fzf lazygit pcmanfm lf-bin zip unzip unrar alacritty xorg-xbacklight \
-        progress polybar betterlockscreen picom-jonaburg-git \
+        progress polybar betterlockscreen picom-jonaburg-git noto-fonts-emoji \
         engrampa numix-circle-icon-theme-git numix-cursor-theme xreader xreader pfetch \
-        otf-ipafont ttf-dejavu ttf-droid ttf-roboto ttf-liberation \
+        noto-fonts noto-fonts-cjk noto-fonts-extra ttf-dejavu ttf-droid ttf-roboto ttf-liberation \
         perl-image-exiftool flameshot xfce4-settings npm python-pip
 
     # Link rofi to dmenu
@@ -71,9 +72,8 @@ install() {
     link_script mpdc askpass idletime logout projector webserver batterycheck awesome-flameshot 
 
     # Setup NeoVim
-    curl -fLo /home/$USER/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    nvim +PlugInstall +qall
+		source $DIR/install.sh
+    nvim +PaqInstall +qall
     sudo npm install -g neovim
     sudo pip install neovim
 

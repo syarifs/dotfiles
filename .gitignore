@@ -1,4 +1,4 @@
-config/nvim/plugged/**
+config/nvim/lsp
 config/mpd/pid
 config/mpd/log
 config/mpd/state

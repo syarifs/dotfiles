@@ -1,21 +1,11 @@
 font:
   normal:
-    family: FiraCode
-    style: Regular
-
+    family: Fira Code
   bold:
-    family: FiraCode
-    style: Bold
-
+    family: Fira Code
   italic:
-    family: FiraCode
-    style: Italic
-
-  bold_italic:
-    family: FiraCode
-    style: BoldItalic
-  size: 10
-
+    family: Fira Code
+  size: 9
 window:
   padding:
     x: 0
